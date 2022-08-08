@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body{
+    display: flex;
+    justify-content: center;
+    
+    background-color: #0B2434;
+}
+/* ----- game component ----- */
+.game{
+    margin-top: 100px;
+    width: 400px;
+    height: 400px;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+.dice--one{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+/* ------ dice component ----- */
+.dice{
+    padding: 6px 10px;
+    background-color: white;
+    box-shadow: 2px 2px 8px rgb(0, 0, 0, 0.4);
+    border-radius: 3px;
+}
