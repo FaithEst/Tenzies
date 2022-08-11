@@ -14,6 +14,15 @@ import Die from "./Die";
  * of Die elements and render those in place of our
  * manually-written 10 Die elements.
  */
+
+/**
+ * Challenge: Create a `Roll Dice` button that will re-roll
+ * all 10 dice
+ * 
+ * Clicking the button should generate a new array of numbers
+ * and set the `dice` state to that new array (thus re-rendering
+ * the array to the page)
+ */
 export default function Game(){
     const [numbersArray, setNumbersArray] = useState(allNewDice());
 
@@ -24,9 +33,11 @@ export default function Game(){
         }
         return numbers;
     }
-    
+    function rollDice(){
+        setNumbersArray(allNewDice())
+    }
     const die = numbersArray.map(num => <Die value={num}/>)
-
+    console.log("component render")
     return(
         <div className="game">
             <h1>Tenzies</h1>
@@ -35,8 +46,11 @@ export default function Game(){
                 the same. Click each die to freeze it at 
                 its current value between rolls.
             </p>
-            <div className="dice--one">
+            <div className="all--dice">
                 {die}
+            </div>
+            <div>
+                <button className="roll--dice" onClick={rollDice}>ROLL</button>
             </div>
         </div>
     )
