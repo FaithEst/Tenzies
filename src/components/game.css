@@ -8,7 +8,7 @@
 body{
     display: flex;
     justify-content: center;
-    
+    font-family: 'Karla', sans-serif;
     background-color: #0B2434;
 }
 /* ----- game component ----- */
@@ -21,13 +21,32 @@ body{
     border-radius: 10px;
     background-color: #F5F5F5;
 }
-.dice--one{
+.game p{
+    margin-top: 10px;
+}
+.all--dice{
     margin-top: 20px;
     display: grid;
     grid-template: auto auto / repeat(5, 1fr);
     gap: 20px;
 }
-/* ------ dice component ----- */
+.roll--dice{
+    border-style: none;
+    margin-top: 50px;
+    background-color: #5035FF;
+    color: white;
+    font-size: 17px;
+    padding: 10px 35px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.roll--dice:focus{
+    outline: none;
+}
+.roll--dice:active{
+    box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.5);
+}
+/* ------ die component ----- */
 .dice{
     height: 50px;
     width: 50px;
