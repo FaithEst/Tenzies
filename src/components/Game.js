@@ -42,6 +42,18 @@ import { nanoid } from "nanoid";
  * if it's "held" or not.
  */
 
+/**
+ * Challenge: Create a function `holdDice` that takes
+ * `id` as a parameter. For now, just have the function
+ * console.log(id).
+ * 
+ * Then, figure out how to pass that function down to each
+ * instance of the Die component so when each one is clicked,
+ * it logs its own unique ID property. (Hint: there's more
+ * than one way to make that work, so just choose whichever
+ * you want)
+ * 
+ */
 export default function Game(){
     const [diceObjectArray, setdiceObjectArray] = useState(allNewDice());
 
@@ -59,11 +71,15 @@ export default function Game(){
     function rollDice(){   //regenerates another set of random numbers
         setdiceObjectArray(allNewDice())
     }
+    function holdDice(id){
+        console.log(id)
+    }
     const die = diceObjectArray.map(num => 
         <Die 
-            key={num.id} 
+            key={num.id}
             value={num.value}
             isHeld={num.isHeld}
+            holdDice={() => holdDice(num.id)}
         />
     )
     console.log("component render")

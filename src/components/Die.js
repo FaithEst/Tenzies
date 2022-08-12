@@ -6,6 +6,12 @@ export default function Die(props){
         backgroundColor: props.isHeld ? "green" : "white"
     }
     return(
-        <div className="dice" style={styles}>{props.value}</div>
+        <div 
+            className="dice" 
+            style={styles}
+            onClick={props.holdDice}
+        >
+            {props.value}
+        </div>
     )
 }
