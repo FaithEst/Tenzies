@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import './game.css';
 import Die from "./Die";
 import { nanoid } from "nanoid";
@@ -76,8 +76,38 @@ import { nanoid } from "nanoid";
  * function below. When creating new dice, remember to use
  * `id: nanoid()` so any new dice have an `id` as well.
  */
+
+/**
+ * Challenge:
+ * 1. Add new state called `tenzies`, default to false. It
+ *    represents whether the user has won the game yet or not.
+ * 2. Add an effect that runs every time the `dice` state array 
+ *    changes. For now, just console.log("Dice state changed").
+ */
+
+/**
+ * Challenge: Check the dice array for these winning conditions:
+ * 1. All dice are held, and
+ * 2. all dice have the same value
+ * 
+ * If both conditions are true, set `tenzies` to true and log
+ * "You won!" to the console
+ */
 export default function Game(){
-    const [diceObjectArray, setdiceObjectArray] = useState(allNewDice());
+    // initialize an array of 10 dice faces
+    const [diceArray, setDiceArray] = useState(allNewDice());
+
+    const [tenzies, setTenzies] = useState(false);
+
+    useEffect(() => {
+        const allHeld = diceArray.every(dice => dice.isHeld);
+        const firstValue = diceArray[0].value;
+        const allSameValue = diceArray.every(dice => dice.value === firstValue);
+        if (allHeld && allSameValue){
+            setTenzies(true)
+            console.log("You won!");
+        }
+    }, [diceArray])
 
     function generateNewDice(){ //generates new dice-face
         return(
@@ -98,7 +128,7 @@ export default function Game(){
     }
 
     function rollDice(id){   //regenerates another dice-face if not held
-        setdiceObjectArray(prevArray => prevArray.map(dice => (
+        setDiceArray(prevArray => prevArray.map(dice => (
             dice.isHeld ? 
             dice:
             generateNewDice()
@@ -106,14 +136,14 @@ export default function Game(){
     }
 
     function holdDice(id){  // toggles dice-face when clicked
-        setdiceObjectArray(prevArray => prevArray.map(dice => (
+        setDiceArray(prevArray => prevArray.map(dice => (
             id === dice.id ?
             {...dice, isHeld: !dice.isHeld} : 
             dice
         )))
     }
 
-    const die = diceObjectArray.map(num =>    //create a dom element for each dice-face
+    const die = diceArray.map(num =>    //create a dom element for each dice-face
         <Die 
             key={num.id}
             value={num.value}
@@ -121,7 +151,7 @@ export default function Game(){
             holdDice={() => holdDice(num.id)}
         />
     )
-    
+
     console.log("component render")
     return(
         <div className="game">
