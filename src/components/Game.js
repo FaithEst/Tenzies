@@ -66,31 +66,54 @@ import { nanoid } from "nanoid";
  * of the die to determine which one to flip `isHeld` on,
  * but you can do whichever way makes the most sense to you.
  */
+
+/**
+ * Challenge: Update the `rollDice` function to not just roll
+ * all new dice, but instead to look through the existing dice
+ * to NOT role any that are being `held`.
+ * 
+ * Hint: this will look relatively similiar to the `holdDice`
+ * function below. When creating new dice, remember to use
+ * `id: nanoid()` so any new dice have an `id` as well.
+ */
 export default function Game(){
     const [diceObjectArray, setdiceObjectArray] = useState(allNewDice());
 
-    function allNewDice(){    //returns an object with array of 10 random numbers from 1-6 (inclusive)
-        const numbers = [];
-        for(let num = 0; num < 10; num++){
-            numbers.push({
+    function generateNewDice(){ //generates new dice-face
+        return(
+            {
                 value: Math.ceil(Math.random() * 6),
                 isHeld: false,
                 id: nanoid()
-            });
+            }
+        )
+    }
+
+    function allNewDice(){    //generate 10 dice faces
+        const numbers = [];
+        for(let num = 0; num < 10; num++){
+            numbers.push(generateNewDice());
         }
         return numbers;
     }
-    function rollDice(){   //regenerates another set of random numbers
-        setdiceObjectArray(allNewDice())
+
+    function rollDice(id){   //regenerates another dice-face if not held
+        setdiceObjectArray(prevArray => prevArray.map(dice => (
+            dice.isHeld ? 
+            dice:
+            generateNewDice()
+        )))
     }
-    function holdDice(id){
+
+    function holdDice(id){  // toggles dice-face when clicked
         setdiceObjectArray(prevArray => prevArray.map(dice => (
             id === dice.id ?
             {...dice, isHeld: !dice.isHeld} : 
             dice
         )))
     }
-    const die = diceObjectArray.map(num => 
+
+    const die = diceObjectArray.map(num =>    //create a dom element for each dice-face
         <Die 
             key={num.id}
             value={num.value}
@@ -98,6 +121,7 @@ export default function Game(){
             holdDice={() => holdDice(num.id)}
         />
     )
+    
     console.log("component render")
     return(
         <div className="game">
