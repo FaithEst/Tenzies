@@ -2,6 +2,8 @@ import React, {useState, useEffect} from "react";
 import './game.css';
 import Die from "./Die";
 import { nanoid } from "nanoid";
+import Confetti from 'react-confetti';
+
 
 /**
  * Challenge:
@@ -93,13 +95,23 @@ import { nanoid } from "nanoid";
  * If both conditions are true, set `tenzies` to true and log
  * "You won!" to the console
  */
+/**
+ * Challenge: Tie off loose ends!
+ * 1. If tenzies is true, Change the button text to "New Game"
+ * 2. If tenzies is true, use the "react-confetti" package to
+ *    render the <Confetti /> component 🎉
+ * 
+ *    Hint: don't worry about the `height` and `width` props
+ *    it mentions in the documentation.
+ */
 export default function Game(){
     // initialize an array of 10 dice faces
     const [diceArray, setDiceArray] = useState(allNewDice());
 
     const [tenzies, setTenzies] = useState(false);
 
-    useEffect(() => {
+
+    useEffect(() => {   //Check the dice array for these winning conditions 
         const allHeld = diceArray.every(dice => dice.isHeld);
         const firstValue = diceArray[0].value;
         const allSameValue = diceArray.every(dice => dice.value === firstValue);
@@ -109,6 +121,9 @@ export default function Game(){
         }
     }, [diceArray])
 
+    
+    const checkTenzies = tenzies ? "New Game" : "Roll Dice";
+    
     function generateNewDice(){ //generates new dice-face
         return(
             {
@@ -128,11 +143,16 @@ export default function Game(){
     }
 
     function rollDice(id){   //regenerates another dice-face if not held
-        setDiceArray(prevArray => prevArray.map(dice => (
-            dice.isHeld ? 
-            dice:
-            generateNewDice()
-        )))
+        if(!tenzies){
+            setDiceArray(prevArray => prevArray.map(dice => (
+                dice.isHeld ? 
+                dice:
+                generateNewDice()
+            )))
+        } else{
+            setTenzies(false)
+            setDiceArray(allNewDice())
+        }
     }
 
     function holdDice(id){  // toggles dice-face when clicked
@@ -152,9 +172,9 @@ export default function Game(){
         />
     )
 
-    console.log("component render")
     return(
         <div className="game">
+            {tenzies && <Confetti/>}
             <h1>Tenzies</h1>
             <p>
                 Roll until all dice are 
@@ -165,7 +185,7 @@ export default function Game(){
                 {die}
             </div>
             <div>
-                <button className="roll--dice" onClick={rollDice}>ROLL</button>
+                <button className="roll--dice" onClick={rollDice}>{checkTenzies}</button>
             </div>
         </div>
     )
